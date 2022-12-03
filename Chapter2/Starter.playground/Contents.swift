@@ -9,8 +9,8 @@ example(of: "Publisher") {
     let myNotification = Notification.Name("MyNotification")
     
     // 2. Access NotificationCenter's default value to a local constant.
-    let publisher = NotificationCenter.default
-        .publisher(for: myNotification)
+//    let publisher = NotificationCenter.default
+//        .publisher(for: myNotification)
     
     /*
      Note: When an event trigger, the notification center broadcast a notification.
@@ -38,6 +38,72 @@ example(of: "Publisher") {
     // 6. Removing the Observer
     center.removeObserver(observer)
 }
+
+example(of: "Publisher") {
+    // 1. create the notification
+    
+    let myNotification =  Notification.Name("myNotification")
+
+    // 2. Create the notification center.
+    let center = NotificationCenter.default
+
+    
+    // 3. Using the center to receive the event with observer
+    let observer = center.addObserver(
+        forName: myNotification, object: nil, queue: .main) { notification in
+            print("Receive the notification")
+        }
+    
+    center.post(name: myNotification, object: nil)
+    
+    // 4. release the observer
+    center.removeObserver(observer)
+}
+
+example(of: "Publisher - 3") {
+    /*
+     Subscribing with sink(_: _:)
+     */
+    
+    // My notification
+    let myNotification = Notification.Name("myNotification")
+    
+    // Using the notification center
+    let center = NotificationCenter.default
+    
+    // Creating publisher
+    let publisher = center.publisher(for: myNotification, object: nil)
+    
+    // Creating subscriber
+    let subscription = publisher
+        .sink { _ in
+            print("Received notification")
+        }
+    
+    center.post(name: myNotification, object: nil)
+    
+    subscription.cancel()
+}
+
+/*
+ 
+ Sink actually return two closures:
+ 1. Return the completion handler (Either success or failure)
+ 2. Handle the receiving value
+ 
+ */
+
+example(of: "Just") {
+    let just = Just("Just emit once.")
+    
+    _ = just.sink(
+        receiveCompletion: {
+            print("Received completion", $0)
+        }, receiveValue: { value in
+            print("Received the value \(value)")
+        })
+}
+
 
 /// Copyright (c) 2021 Razeware LLC
 ///
