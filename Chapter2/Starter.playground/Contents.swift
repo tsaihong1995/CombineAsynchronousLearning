@@ -4,7 +4,40 @@ import _Concurrency
 
 var subscriptions = Set<AnyCancellable>()
 
-<#Add your code here#>
+example(of: "Publisher") {
+    // 1. Create a Notification
+    let myNotification = Notification.Name("MyNotification")
+    
+    // 2. Access NotificationCenter's default value to a local constant.
+    let publisher = NotificationCenter.default
+        .publisher(for: myNotification)
+    
+    /*
+     Note: When an event trigger, the notification center broadcast a notification.
+     
+     Publisher emits two kinds of event:
+     1. Value, also referred to as element.
+     2. A completion event
+     */
+    
+    // 3. Get a handle to the default notification center.
+    let center = NotificationCenter.default
+    
+    // 4. Add the observer
+    let observer = center.addObserver(
+        forName: myNotification,
+        object: nil,
+        queue: nil
+    ) { notification in
+        print("Notification Receive")
+    }
+
+    // 5. Post a notification with the corresponding name
+    center.post(name: myNotification, object: nil)
+    
+    // 6. Removing the Observer
+    center.removeObserver(observer)
+}
 
 /// Copyright (c) 2021 Razeware LLC
 ///
