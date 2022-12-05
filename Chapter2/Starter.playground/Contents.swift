@@ -104,6 +104,43 @@ example(of: "Just") {
         })
 }
 
+example(of: "Assign To") {
+    // 1
+    class SomeObject {
+        var value: String = "" {
+            didSet {
+                print("Did set \(value)")
+            }
+        }
+    }
+
+    // 2
+    let object = SomeObject()
+
+    // 3
+    let publisher = ["Hello", "World"].publisher
+
+    // 4
+    _ = publisher
+        .assign(to: \.value, on: object)
+}
+
+example(of: "Assign To - 2") {
+    class SomeObject {
+        @Published var value = 0
+    }
+
+    let object = SomeObject()
+
+    object.$value
+        .sink { value in
+            print("Received value : \(value)")
+        }
+    
+    (0..<10).publisher
+        .assign(to: &object.$value)
+}
+
 
 /// Copyright (c) 2021 Razeware LLC
 ///
