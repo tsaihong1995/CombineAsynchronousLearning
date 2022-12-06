@@ -39,27 +39,6 @@ example(of: "Publisher") {
     center.removeObserver(observer)
 }
 
-example(of: "Publisher") {
-    // 1. create the notification
-    
-    let myNotification =  Notification.Name("myNotification")
-
-    // 2. Create the notification center.
-    let center = NotificationCenter.default
-
-    
-    // 3. Using the center to receive the event with observer
-    let observer = center.addObserver(
-        forName: myNotification, object: nil, queue: .main) { notification in
-            print("Receive the notification")
-        }
-    
-    center.post(name: myNotification, object: nil)
-    
-    // 4. release the observer
-    center.removeObserver(observer)
-}
-
 example(of: "Publisher - 3") {
     /*
      Subscribing with sink(_: _:)
